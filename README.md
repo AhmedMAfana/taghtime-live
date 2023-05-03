@@ -8,7 +8,9 @@
      memcached
      fswatch
      supervisor
-     
+   
+----------
+
 ## Installation
 
 Clone the repository
@@ -27,6 +29,8 @@ Switch to the master branch
 Install all the dependencies using composer
 
     composer install --no-scripts --ignore-platform-reqs
+
+----------
 
 ## Configuration .env file
 Copy the example env file and make the required configuration changes in the .env file
@@ -62,6 +66,8 @@ Generate a new application key
 
     php artisan key:generate
 
+----------
+
 ## Migrations 
 Run the database migrations
 
@@ -74,6 +80,8 @@ Run the database migrations
   
 
 You can now access the server at https://yourdomain
+
+----------
 
 ## configuration queue work by supervisor
    make service for fswatch
