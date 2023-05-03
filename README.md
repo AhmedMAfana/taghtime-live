@@ -89,7 +89,7 @@ Switch supervisor conf folder
    cd /etc/supervisor/conf.d
   
 create a yourdomain-worker.conf file that starts and monitors queue:work processes: and put this content
-
+```bash
      [program:yourdomain-worker]
      process_name=%(program_name)s_%(process_num)02d
      command=php **PathToYourProject**/artisan queue:work --sleep=3 --tries=3 --max-time=3600
@@ -100,8 +100,9 @@ create a yourdomain-worker.conf file that starts and monitors queue:work process
      user=forge
      numprocs=8
      redirect_stderr=true
-     stdout_logfile=***PathToYourProject***/yourdomain-worker.log
+     stdout_logfile=**PathToYourProject**/yourdomain-worker.log
      stopwaitsecs=3600
+ ```
      
 ## Starting Supervisor
 
