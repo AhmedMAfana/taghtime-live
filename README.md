@@ -159,3 +159,73 @@ Write this code
     sudo chmod -R 777 watch_worker.sh
   
 ```
+
+ ----------
+ 
+ 
+ Create bash file with name **run_supervisor.sh** in root of your project with the given code
+ ```bash
+ 
+     sudo nano run_supervisor.sh 
+     
+```
+Write this code 
+```bash
+     #!/bin/bash
+      # Verify number of arguments
+     if [[ $# -ne 2 ]]
+     then
+         echo "Missing arguments."
+         echo "1: new subdomain name"
+         echo "2: server path"
+         exit 1
+     fi
+     echo $1 #subdomain
+     echo $2 #server path
+     DIR="/etc/supervisor/conf.d"
+     SERVER_PATH=$2
+     echo "step 2"
+     # stdout_logfile=${BACK_PATH}$1-worker.log"
+     if [ -d "$DIR" ]; then
+       ### Take action if $DIR exists ###
+       echo "Installing config files in ${DIR}..."
+       WORKER="
+       [program:$1-worker]
+       process_name=%(program_name)s_%(process_num)02d
+       command=php ${2}artisan queue:work  --sleep=3 --tries=3 --max-time=3600
+       autostart=true
+       autorestart=true
+       stopasgroup=true
+       killasgroup=true
+       user=root
+       numprocs=2
+       redirect_stderr=true
+       stdout_logfile=${SERVER_PATH}$1-worker.log
+       stopwaitsecs=3600"
+       SVF="${DIR}/$1-worker.conf"
+       echo  "${WORKER}"  | tee  "${SVF}"
+       #echo $worker
+       if [ -d "$SVF" ]; then
+         sudo supervisorctl reread
+         sudo supervisorctl update
+         sudo supervisorctl start $1-worker:*
+         echo "$1-worker.conf running"
+       fi
+     else
+       ###  Control will jump here if $DIR does NOT exists ###
+       echo "Error: ${DIR} not found. install supervisor first ."
+       exit 1
+     fi
+
+```
+ 
+ 
+  Give bash file **run_supervisor.sh** a permission
+     
+``` bash
+    #change the permissions of the file   
+    sudo chmod -R 777 run_supervisor.sh
+  
+```
+
+
