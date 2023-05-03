@@ -220,12 +220,65 @@ Write this code
 ```
  
  
-  Give bash file **run_supervisor.sh** a permission
+  Give bash file **run_supervisor.sh**  permissions
      
 ``` bash
     #change the permissions of the file   
     sudo chmod -R 777 run_supervisor.sh
   
 ```
+
+
+----------
+
+## Creating linux service for fswatch
+
+     
+ 
+``` bash
+    # Create the file    
+    nano /etc/systemd/system/your-service.service
+  
+```
+ Put the code to the file **your-service.service**
+
+``` bash
+
+     Description=fswatch taghtime backend server
+     Wants=network.target
+     After=syslog.target network-online.target
+     [Service]
+     Type=simple
+     ExecStart=fswatch /**path_to_project_root_folder**/ --event Created | xargs -I '{}' sh -c '/**path_to_project_root_folder**/env_watch_worker.sh "$1"' - {}
+     #example  : fswatch /home/ami1/Desktop/test-redme/Tagh-Time/ --event Created | xargs -I '{}' sh -c '/home/ami1/Desktop/test-redme/Tagh-Time/watch_worker.sh "$1"' - {}
+     Restart=on-failure
+     RestartSec=10
+     KillMode=process
+     [Install]
+     WantedBy=multi-user.target
+
+  
+```
+ Save file and Run the following commands
+ 
+ ``` bash  
+     #Reload the service files to include the new service.
+     sudo systemctl daemon-reload
+     
+     #Start your service
+     sudo systemctl start your-service.service
+     
+     #sudo systemctl status example.service
+     sudo systemctl status example.service
+     
+     #sudo systemctl enable example.service
+     sudo systemctl enable example.service
+     
+     #sudo systemctl disable example.service
+     sudo systemctl disable example.service
+     
+```
+ 
+ 
 
 
