@@ -154,8 +154,8 @@ Write this code
  
   Give bash file **watch_worker.sh** a permission
      
-     ``` bash
+``` bash
     #change the permissions of the file   
-   sudo chmod -R 777 watch_worker.sh
+    sudo chmod -R 777 watch_worker.sh
   
-     ```
+```
