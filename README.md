@@ -84,4 +84,29 @@ You can now access the server at https://yourdomain
 ----------
 
 ## configuration queue work by supervisor
-   make service for fswatch
+Switch supervisor conf folder  
+
+   cd /etc/supervisor/conf.d
+  
+create a yourdomain-worker.conf file that starts and monitors queue:work processes: and put this content
+
+     [program:yourdomain-worker]
+     process_name=%(program_name)s_%(process_num)02d
+     command=php **PathToYourProject**/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+     autostart=true
+     autorestart=true
+     stopasgroup=true
+     killasgroup=true
+     user=forge
+     numprocs=8
+     redirect_stderr=true
+     stdout_logfile=***PathToYourProject***/yourdomain-worker.log
+     stopwaitsecs=3600
+     
+## Starting Supervisor
+
+     sudo supervisorctl reread
+
+     sudo supervisorctl update
+
+     sudo supervisorctl start laravel-worker:*
