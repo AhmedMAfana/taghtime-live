@@ -1,9 +1,10 @@
 # ![Tagh Time App]
 
 
-# Getting started with Back-end in ubuntu server
+# Getting started with Back-end in linux server
 ## Dependencies
      php 8.1
+     mysql or mariadb
      memcached
      fswatch
      supervisor
@@ -46,8 +47,15 @@ change  following valuess
 | DB_PASSWORD       | your database password                               	|
 | MAIN_DB    	     | same as your database name                               	|
 
-Refer the [api specification](#api-specification) for more info.
 
+Email Configurations
+
+     MAIL_MAILER=smtp
+     MAIL_HOST=your stmp server
+     MAIL_PORT=your stmp port
+     MAIL_USERNAME=your stmp user
+     MAIL_PASSWORD=your stmp password
+     MAIL_ENCRYPTION=TLS
 
 
 Generate a new application key
