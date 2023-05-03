@@ -3,6 +3,7 @@
 
 # Getting started with Back-end in ubuntu server
 ## Dependencies
+     php 8.1
      memcached
      fswatch
      supervisor
@@ -26,12 +27,26 @@ Install all the dependencies using composer
 
     composer install --no-scripts --ignore-platform-reqs
 
-
+## Configuration .env file
 Copy the example env file and make the required configuration changes in the .env file
 
 
     cp .env.example .env
 
+change  following valuess
+
+| **Key**          	| **Value**                                                 |
+|------------------	|--------------------------------------------------	     |
+| APP_URL       	| your domin URL e.g : https://taghtime.com/                |
+| FRONT_APP_URL 	| your domin URL e.g : https://taghtime-front.com 	     |
+| BASE_URL    	     | your domin URL without http schema e.g   : taghtime.com  	|
+| DB_DATABASE       | your database name                                   	|
+| DB_HOST           | your database host ip e.g 11.222.22.225                  	|
+| DB_USERNAME       | your database user                                      	|
+| DB_PASSWORD       | your database password                               	|
+| MAIN_DB    	     | same as your database name                               	|
+
+Refer the [api specification](#api-specification) for more info.
 
 
 
@@ -39,7 +54,7 @@ Generate a new application key
 
     php artisan key:generate
 
-
+## Migrations 
 Run the database migrations
 
      php artisan migrate:fresh --path=/database/migrations/company
