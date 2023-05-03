@@ -83,11 +83,14 @@ You can now access the server at https://yourdomain
 
 ----------
 
-## configuration queue work by supervisor
+## Configuration queue work by supervisor
 Switch supervisor conf folder  
-
+``` bash
    cd /etc/supervisor/conf.d
+    #change the permissions of the folder   
+   sudo chmod -R 777 ../conf.d
   
+```
 create a yourdomain-worker.conf file that starts and monitors queue:work processes: and put this content
 ```bash
      [program:yourdomain-worker]
@@ -111,3 +114,48 @@ create a yourdomain-worker.conf file that starts and monitors queue:work process
      sudo supervisorctl update
 
      sudo supervisorctl start laravel-worker:*
+     
+ ----------
+ ## Configuration for fswatch to watch any new subdomain and start Supervisor 
+ 
+ Create bash file with name **watch_worker.sh** in root of your project with the given code
+ ```bash
+ 
+     sudo nano watch_worker.sh 
+     
+```
+Write this code 
+```bash
+     #!/bin/bash
+     echo "new file is added $1"
+     filename=$(basename ${1})
+     AMI_HOST=".taghtime.com"     ##modifiy this to your .domain
+
+     SERVER_PATH="/home/ami1/Desktop/test-redme/Tagh-Time/"    ## modifiy this to your backend package path
+     RUN_SUPERVISOR_FILE="${SERVER_PATH}run_supervisor.sh"
+
+     echo $filename
+     IFS='.'
+
+         if [[ $filename == *$AMI_HOST* ]]; then
+
+          read -ra ADDR <<< "$filename"   # str is read into an array as tokens separated by IFS
+             for i in "${ADDR[2]}"; do   # access each element of array
+                echo "$i : subdomain added \n" | tee success_domain.txt
+                echo "$i"
+                bash "${RUN_SUPERVISOR_FILE}"  $i $SERVER_PATH
+             done
+
+          else
+          echo "not match"
+         fi
+```
+ 
+ 
+  Give bash file **watch_worker.sh** a permission
+     
+     ``` bash
+    #change the permissions of the file   
+   sudo chmod -R 777 watch_worker.sh
+  
+     ```
