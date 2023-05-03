@@ -53,4 +53,4 @@ Run the database migrations
 You can now access the server at https://yourdomain
 
 ## configuration queue work by supervisor
-  - 1 make service for fswatch
+   make service for fswatch
