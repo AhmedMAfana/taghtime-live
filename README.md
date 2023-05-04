@@ -142,8 +142,8 @@ Write this code
           read -ra ADDR <<< "$filename"   # str is read into an array as tokens separated by IFS
              for i in "${ADDR[2]}"; do   # access each element of array
                 echo "$i : subdomain added \n" | tee success_domain.txt
-                echo "$i"
-                bash "${RUN_SUPERVISOR_FILE}"  $i $SERVER_PATH
+                echo "${i}${AMI_HOST}"
+                bash "${RUN_SUPERVISOR_FILE}"  $i $SERVER_PATH  "${i}${AMI_HOST}"
              done
 
           else
@@ -192,7 +192,7 @@ Write this code
        WORKER="
        [program:$1-worker]
        process_name=%(program_name)s_%(process_num)02d
-       command=php ${2}artisan queue:work  --sleep=3 --tries=3 --max-time=3600
+       command=php ${2}artisan queue:work --domain=${3} --sleep=3 --tries=3 --max-time=3600
        autostart=true
        autorestart=true
        stopasgroup=true
