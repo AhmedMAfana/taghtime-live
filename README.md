@@ -88,7 +88,7 @@ Switch supervisor conf folder
 ``` bash
    cd /etc/supervisor/conf.d
     #change the permissions of the folder   
-   sudo chmod -R 777 ../conf.d
+   sudo chmod +x ../conf.d
   
 ```
 create a yourdomain-worker.conf file that starts and monitors queue:work processes: and put this content
@@ -156,7 +156,7 @@ Write this code
      
 ``` bash
     #change the permissions of the file   
-    sudo chmod -R 777 watch_worker.sh
+    sudo chmod +x watch_worker.sh
   
 ```
 
@@ -204,13 +204,12 @@ Write this code
        stopwaitsecs=3600"
        SVF="${DIR}/$1-worker.conf"
        echo  "${WORKER}"  | tee  "${SVF}"
-       #echo $worker
-       if [ -d "$SVF" ]; then
-         sudo supervisorctl reread
-         sudo supervisorctl update
-         sudo supervisorctl start $1-worker:*
-         echo "$1-worker.conf running"
-       fi
+      
+       sudo supervisorctl reread
+       sudo supervisorctl update
+       sudo supervisorctl start $1-worker:*
+       echo "$1-worker.conf running"
+      
      else
        ###  Control will jump here if $DIR does NOT exists ###
        echo "Error: ${DIR} not found. install supervisor first ."
@@ -224,7 +223,7 @@ Write this code
      
 ``` bash
     #change the permissions of the file   
-    sudo chmod -R 777 run_supervisor.sh
+    sudo chmod +x run_supervisor.sh
   
 ```
 
